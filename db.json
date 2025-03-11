@@ -1,0 +1,54 @@
+{
+  "cars": [
+    {
+      "id": "1",
+      "marque": "Toyota",
+      "modele": "Corolla",
+      "couleur": "Rouge"
+    },
+    {
+      "id": "2",
+      "marque": "Renault",
+      "modele": "Clio",
+      "couleur": "Bleu"
+    },
+    {
+      "id": "3",
+      "marque": "Peugeot",
+      "modele": "208",
+      "couleur": "Noir"
+    }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "username": "admin",
+      "password": "admin123",
+      "role": "admin"
+    },
+    {
+      "id": "2",
+      "username": "user1",
+      "password": "user123",
+      "role": "user"
+    },
+    {
+      "id": "3",
+      "username": "user2",
+      "password": "user456",
+      "role": "user"
+    },
+    {
+      "id": "5900",
+      "username": "Joy",
+      "password": "joy12345",
+      "role": "user"
+    },
+    {
+      "id": "20bc",
+      "username": "jawad",
+      "password": "jawad240122",
+      "role": "user"
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-4">
+      <div class="card shadow-lg">
+        <div class="card-body p-4">
+          <h2 class="card-title text-center mb-4">Inscription</h2>
+
+          <!-- Formulaire d'inscription -->
+          <form (ngSubmit)="signup()">
+            <!-- Champ Nom d'utilisateur -->
+            <div class="mb-3">
+              <label for="username" class="form-label">Nom d'utilisateur</label>
+              <input
+                type="text"
+                id="username"
+                class="form-control"
+                [(ngModel)]="username"
+                name="username"
+                placeholder="Choisissez votre nom d'utilisateur"
+                required
+              />
+            </div>
+
+            <!-- Champ Mot de passe -->
+            <div class="mb-3">
+              <label for="password" class="form-label">Mot de passe</label>
+              <input
+                type="password"
+                id="password"
+                class="form-control"
+                [(ngModel)]="password"
+                name="password"
+                placeholder="Choisissez un mot de passe"
+                required
+              />
+            </div>
+
+            <!-- Bouton de soumission -->
+            <button type="submit" class="btn btn-primary w-100 mb-3">
+              S'inscrire
+            </button>
+
+            <!-- Lien vers la connexion -->
+            <p class="text-center mb-0">
+              <a routerLink="/login" class="text-decoration-none">
+                Déjà un compte ? Connectez-vous
+              </a>
+            </p>
+          </form>
+
+          <!-- Affichage des messages d'erreur -->
+          <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+            {{ errorMessage }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
