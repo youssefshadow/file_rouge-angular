@@ -3,12 +3,11 @@ import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SignupComponent } from '../../signup/signup.component';
-import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-auth',
   standalone: true,
-  imports: [CommonModule, FormsModule, SignupComponent, RouterLink],
+  imports: [CommonModule, FormsModule, SignupComponent],
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.css'],
 })

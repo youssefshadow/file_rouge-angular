@@ -47,7 +47,11 @@
 
               <!-- Lien pour basculer entre connexion et inscription -->
               <p class="text-center mb-0">
-                <a [routerLink]="['/signup']" class="text-decoration-none">
+                <a
+                  (click)="toggleForm()"
+                  class="text-decoration-none"
+                  style="cursor: pointer"
+                >
                   Pas de compte ? Inscrivez-vous
                 </a>
               </p>
@@ -56,8 +60,7 @@
 
           <!-- Formulaire d'inscription avec SignupComponent -->
           <div *ngIf="!isLogin">
-            <app-signup></app-signup>
-            <!-- Affiche le composant d'inscription -->
+            <app-signup (toggleForm)="toggleForm()"></app-signup>
           </div>
 
           <!-- Affichage des messages d'erreur -->

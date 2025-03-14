@@ -1,22 +1,27 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { AuthService } from '../services/auth.service';
-import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-signup',
-  standalone: true, // <-- Ajoutez cette ligne
-  imports: [CommonModule, FormsModule, RouterLink],
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css'],
 })
 export class SignupComponent {
+  @Output() toggleForm = new EventEmitter<void>();
+
   username: string = '';
   password: string = '';
   errorMessage: string = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService) {}
+
+  onToggleForm() {
+    this.toggleForm.emit();
+  }
 
   signup() {
     if (!this.username || !this.password) {
@@ -31,7 +36,10 @@ export class SignupComponent {
         role: 'user',
       })
       .subscribe({
-        next: () => this.router.navigate(['/login']),
+        next: () => {
+          alert('Inscription réussie ! Vous pouvez maintenant vous connecter.');
+          this.toggleForm.emit();
+        },
         error: (err) => (this.errorMessage = err.message || 'Erreur inconnue.'),
       });
   }
