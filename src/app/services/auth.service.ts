@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, throwError, BehaviorSubject } from 'rxjs';
+import { Observable, throwError, BehaviorSubject, tap } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +11,7 @@ export class AuthService {
   private apiUrl = 'http://localhost:3000/users';
   private loggedIn = new BehaviorSubject<boolean>(false);
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: Router) {
     // Vérifier si un utilisateur est déjà connecté en utilisant le localStorage
     const user = localStorage.getItem('user');
     if (user) {
@@ -59,6 +60,7 @@ export class AuthService {
           const user = response[0];
           localStorage.setItem('user', JSON.stringify(user));
           this.loggedIn.next(true);
+          this.router.navigate(['/cars']); // Redirection vers la page des voitures
         }
         return response;
       }),
@@ -73,5 +75,63 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem('user');
     this.loggedIn.next(false);
+    this.router.navigate(['/home']);
+  }
+
+  // Obtenir l'utilisateur actuellement connecté
+  getCurrentUser(): any {
+    const userStr = localStorage.getItem('user');
+    if (userStr) {
+      return JSON.parse(userStr);
+    }
+    return null;
+  }
+
+  // Mettre à jour le profil utilisateur
+  updateProfile(userId: number, updatedData: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${userId}`, updatedData).pipe(
+      map((response) => {
+        // Mettre à jour les informations dans le localStorage
+        localStorage.setItem('user', JSON.stringify(response));
+        return response;
+      }),
+      catchError((error) => {
+        console.error('Erreur lors de la mise à jour du profil', error);
+        return throwError(error);
+      })
+    );
+  }
+
+  // Vérifier si l'utilisateur est authentifié
+  isAuthenticated(): boolean {
+    return this.loggedIn.value;
+  }
+
+  // Changer le mot de passe
+  changePassword(
+    userId: number,
+    oldPassword: string,
+    newPassword: string
+  ): Observable<any> {
+    return this.http
+      .get<any[]>(this.apiUrl, {
+        params: new HttpParams()
+          .set('id', userId.toString())
+          .set('password', oldPassword),
+      })
+      .pipe(
+        switchMap((users) => {
+          if (users.length === 0) {
+            return throwError(() => new Error('Mot de passe actuel incorrect'));
+          }
+          return this.http.patch(`${this.apiUrl}/${userId}`, {
+            password: newPassword,
+          });
+        }),
+        catchError((error) => {
+          console.error('Erreur lors du changement de mot de passe', error);
+          return throwError(error);
+        })
+      );
   }
 }
